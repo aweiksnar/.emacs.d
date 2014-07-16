@@ -61,6 +61,8 @@
         alex-magit
         alex-fiplr
         alex-rainbow-mode
+        alex-eco
+        alex-styl
         ))
 
 (dolist (file alex-pkg-full)
