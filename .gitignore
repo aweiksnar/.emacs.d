@@ -1,0 +1,8 @@
+/eshell/lastdir
+/eshell/history
+backups
+backups/*
+auto-save-list
+elpa
+places
+.org*
