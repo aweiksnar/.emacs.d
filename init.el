@@ -41,6 +41,7 @@
                       clojure-mode
                       clojure-test-mode
                       cider
+                      fiplr
                       org))
 
 (dolist (p my-packages)
@@ -58,6 +59,7 @@
         alex-dired
         alex-org
         alex-magit
+        alex-fiplr
         alex-rainbow-mode
         ))
 
