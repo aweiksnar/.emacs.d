@@ -3,4 +3,4 @@
 ;; toggle whitespace
 (global-set-key (kbd "C-x w") 'whitespace-mode)
 
-(provide 'alex-keys)
+(provide 'alex-emacs-keys)

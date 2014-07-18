@@ -33,38 +33,25 @@
              '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
-(defvar my-packages '(better-defaults
-                      coffee-mode
-                      magit
-                      rainbow-mode
-                      web-mode
-                      clojure-mode
-                      clojure-test-mode
-                      cider
-                      fiplr
-                      org
-                      exec-path-from-shell))
-
-(dolist (p my-packages)
-  (package-require p))
-
-;;*replaced by package-require call above
-;;(dolist (p my-packages)
-;;  (when (not (package-installed-p p))
-;;    (package-install p)))
-
-;; require alex-* config files
+;; require alex-* files
 (setq alex-pkg-full
-      '(alex-emacs-prefs
-        alex-keys
-        alex-dired
-        alex-org
-        alex-magit
-        alex-fiplr
-        alex-rainbow-mode
-        alex-eco
-        alex-styl
+      '(alex-emacs-eshell
+        alex-emacs-prefs
+        alex-emacs-keys
+        alex-emacs-eshell
         alex-exec-path-from-shell
+        alex-better-defaults
+        alex-clojure
+        alex-coffee-mode
+        alex-dired
+        alex-eco
+        alex-exec-path-from-shell
+        alex-fiplr
+        alex-magit
+        alex-org
+        alex-rainbow-mode
+        alex-styl
+        alex-web-mode
         ))
 
 (dolist (file alex-pkg-full)
