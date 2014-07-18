@@ -42,7 +42,8 @@
                       clojure-test-mode
                       cider
                       fiplr
-                      org))
+                      org
+                      exec-path-from-shell))
 
 (dolist (p my-packages)
   (package-require p))
@@ -63,6 +64,7 @@
         alex-rainbow-mode
         alex-eco
         alex-styl
+        alex-exec-path-from-shell
         ))
 
 (dolist (file alex-pkg-full)
