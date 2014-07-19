@@ -38,7 +38,6 @@
       '(alex-emacs-eshell
         alex-emacs-prefs
         alex-emacs-keys
-        alex-emacs-eshell
         alex-exec-path-from-shell
         alex-better-defaults
         alex-clojure
