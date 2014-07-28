@@ -25,6 +25,9 @@
   (when (not (package-installed-p pkg))
     (package-install pkg)))
 
+;; set backup directory
+(setq backup-directory-alist `(("." . "~/.saves")))
+
 ;; Add .emacs.d/alex to load-path
 (setq dotfiles-dir (file-name-directory
                     (or (buffer-file-name) load-file-name)))
