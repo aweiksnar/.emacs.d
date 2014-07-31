@@ -57,6 +57,7 @@
         alex-rainbow-mode
         alex-styl
         alex-web-mode
+        alex-cjsx
         ))
 
 (dolist (file alex-pkg-full)
