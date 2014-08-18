@@ -58,6 +58,7 @@
         alex-styl
         alex-web-mode
         alex-cjsx
+        alex-yasnippet
         ))
 
 (dolist (file alex-pkg-full)
