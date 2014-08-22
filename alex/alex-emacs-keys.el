@@ -6,6 +6,9 @@
 ;; hippie expand completion
 (global-set-key (kbd "M-/") 'hippie-expand)
 
+;; open ansi-term
+(global-set-key (kbd "C-x t") 'ansi-term)
+
 ;; shift + arrow key to move between windows
 (windmove-default-keybindings)
 
