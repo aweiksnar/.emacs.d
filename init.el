@@ -52,6 +52,7 @@
         alex-eco
         alex-exec-path-from-shell
         alex-fiplr
+        alex-js
         alex-magit
         alex-org
         alex-rainbow-mode

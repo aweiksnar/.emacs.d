@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: coffee.exports
+# key: exp
+# --
+module?.exports = $1

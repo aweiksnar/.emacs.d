@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: coffee.log
+# key: log
+# --
+console.log $0

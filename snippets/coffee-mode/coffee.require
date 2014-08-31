@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: coffee.require
+# key: req
+# --
+$1 = require '$1'
