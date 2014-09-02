@@ -9,6 +9,9 @@
 ;; open ansi-term
 (global-set-key (kbd "C-x t") 'ansi-term)
 
+;; rgrep
+(global-set-key (kbd "C-x e") 'rgrep)
+
 ;; shift + arrow key to move between windows
 (windmove-default-keybindings)
 
