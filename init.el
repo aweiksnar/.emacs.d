@@ -9,6 +9,10 @@
 (dolist (mode '(menu-bar-mode tool-bar-mode scroll-bar-mode))
   (when (fboundp mode) (funcall mode -1)))
 
+;; winner mode
+(when (fboundp 'winner-mode)
+     (winner-mode 1))
+
 ;; emacs 24.3 pastboard error fix
 (setq save-interprogram-paste-before-kill nil)
 
