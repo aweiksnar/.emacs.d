@@ -13,7 +13,7 @@
 (when (fboundp 'winner-mode)
      (winner-mode 1))
 
-;; emacs 24.3 pastboard error fix
+;; emacs 24.3 pasteboard error fix
 (setq save-interprogram-paste-before-kill nil)
 
 ;; fix the PATH variable
