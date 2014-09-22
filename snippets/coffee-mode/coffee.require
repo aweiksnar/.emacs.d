@@ -2,4 +2,4 @@
 # name: coffee.require
 # key: req
 # --
-$1 = require '$1'
+$1 = require '$0'
