@@ -14,7 +14,7 @@
      (winner-mode 1))
 
 ;; abbrev mode
-(setq-default abbrev-mode t)
+;; (setq-default abbrev-mode t)
 
 ;; emacs 24.3 pasteboard error fix
 (setq save-interprogram-paste-before-kill nil)
