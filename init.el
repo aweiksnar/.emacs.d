@@ -65,6 +65,7 @@
         alex-paredit
         alex-rainbow-mode
         alex-styl
+        alex-sml-mode
         alex-web-mode
         alex-cjsx
         alex-yasnippet
