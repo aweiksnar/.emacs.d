@@ -64,6 +64,7 @@
         alex-js
         alex-magit
         alex-org
+        alex-livescript
         alex-paredit
         alex-rainbow-mode
         alex-styl
