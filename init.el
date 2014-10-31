@@ -40,7 +40,9 @@
 ;; Add .emacs.d/alex to load-path
 (setq dotfiles-dir (file-name-directory
                     (or (buffer-file-name) load-file-name)))
+
 (add-to-list 'load-path (concat dotfiles-dir "alex"))
+(add-to-list 'load-path (concat dotfiles-dir "alex/vendor"))
 
 ;; marmalade
 (require 'package)
