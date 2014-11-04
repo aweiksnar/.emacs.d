@@ -19,6 +19,9 @@
 ;; emacs 24.3 pasteboard error fix
 (setq save-interprogram-paste-before-kill nil)
 
+;; fix ls --dired startup error
+(setq dired-use-ls-dired nil)
+
 ;; (electric-indent-mode 0) ; make return key not auto indent
 
 ;; fix the PATH variable
