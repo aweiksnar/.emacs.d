@@ -64,6 +64,7 @@
         alex-coffee-mode
         alex-dired
         alex-eco
+        alex-elisp
         alex-exec-path-from-shell
         alex-fiplr
         alex-js
