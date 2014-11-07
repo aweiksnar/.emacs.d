@@ -6,6 +6,9 @@
 (yas-global-mode 1)
 ;; (yas-initialize)
 
+;; prevent yasnippet from indenting
+(setq yas-indent-line nil)
+
 (setq yas-root-directory
       (concat dotfiles-dir "snippets"))
 

@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: coffee.react-class
+# key: react
+# --
+React = require 'react'
+
+module?.exports = React.createClass
+  displayName: '$1'
+
+  render: ->
+    $0
