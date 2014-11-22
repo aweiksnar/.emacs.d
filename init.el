@@ -47,10 +47,12 @@
 (add-to-list 'load-path (concat dotfiles-dir "alex"))
 (add-to-list 'load-path (concat dotfiles-dir "alex/vendor"))
 
-;; marmalade
+;; marmalade / melpa
 (require 'package)
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
+(dolist (source '(("melpa" . "http://melpa.org/packages/")
+                  ("marmalade" . "http://marmalade-repo.org/packages/")))
+  (add-to-list 'package-archives source t))
+
 (package-initialize)
 
 ;; require alex-* files
@@ -67,6 +69,7 @@
         alex-elisp
         alex-exec-path-from-shell
         alex-fiplr
+        alex-helm
         alex-js
         alex-magit
         alex-org
