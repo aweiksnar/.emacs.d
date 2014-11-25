@@ -2,7 +2,7 @@
 
 (package-require 'helm)
 
-(global-set-key (kbd "C-c h") 'helm-mini)
+(global-set-key (kbd "C-c h") 'helm-find-files)
 
 (helm-mode 1)
 
