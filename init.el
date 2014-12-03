@@ -69,6 +69,7 @@
         alex-elisp
         alex-exec-path-from-shell
         alex-fiplr
+        alex-haskell
         alex-helm
         alex-js
         alex-magit
