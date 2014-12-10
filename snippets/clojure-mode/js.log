@@ -2,4 +2,4 @@
 # name: js.log
 # key: .log
 # --
-(.log js/console $1)$0
+.log js/console $1
