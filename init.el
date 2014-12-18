@@ -61,6 +61,7 @@
         alex-emacs-prefs
         alex-emacs-keys
         alex-exec-path-from-shell
+        alex-ace-jump-mode
         alex-better-defaults
         alex-clojure
         alex-coffee-mode
