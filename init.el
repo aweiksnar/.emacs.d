@@ -1,9 +1,8 @@
 ;;; init.el
 
-;; use deeper-blue by default - don't touch this...
-(custom-set-variables
- '(custom-enabled-themes (quote (deeper-blue))))
-(custom-set-faces)
+;; save custom settings added by Custom in a separate file
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
 
 ;; disable menu-bar-mode, tool-bar-mode, scroll-bar-mode
 (dolist (mode '(menu-bar-mode tool-bar-mode scroll-bar-mode))
