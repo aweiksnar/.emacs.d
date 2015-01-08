@@ -17,11 +17,6 @@
                   (interactive)
                   (find-file "~/org/")))
 
-
-;; switch rectangle-mark-mode from default (C-x SPC)
-;; so I can use ace-jump-mode in org-mode without conflicts
-(global-set-key (kbd "C-c SPC") 'rectangle-mark-mode)
-
 ;; shift + arrow key to move between windows
 (windmove-default-keybindings)
 
