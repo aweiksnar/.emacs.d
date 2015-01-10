@@ -1,0 +1,407 @@
+#+TITLE: my init file
+#+AUTHOR: alex weiksnar
+
+* emacs
+** initialization stuffs
+   #+NAME: package-init
+   #+BEGIN_SRC emacs-lisp :tangle no
+     ;; keep settings added by Custom out of my init file
+
+     (setq custom-file "~/.emacs.d/custom.el")
+     (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+     (load custom-file)
+
+     ;; disable menu-bar-mode, tool-bar-mode, scroll-bar-mode
+     (dolist (mode '(menu-bar-mode tool-bar-mode scroll-bar-mode))
+       (when (fboundp mode) (funcall mode -1)))
+
+
+     ;; get packages from from melpa and marmalade
+     (require 'package)
+     (setq package-enable-at-startup nil)
+     (dolist (source '(("melpa" . "http://melpa.org/packages/")
+                       ("marmalade" . "http://marmalade-repo.org/packages/")))
+       (add-to-list 'package-archives source t))
+     (package-initialize)
+
+     ;; define a function to require packages
+     (defun package-require (pkg)
+       "Install a package only if it's not already installed."
+       (when (not (package-installed-p pkg))
+         (package-install pkg)))
+
+
+     ;; set dotfiles-dir 
+     (setq dotfiles-dir (file-name-directory
+                         (or (buffer-file-name) load-file-name)))
+
+     ;; winner mode
+     (when (fboundp 'winner-mode)
+       (winner-mode 1))
+
+     ;; abbrev mode
+     ;; (setq-default abbrev-mode t)
+
+     ;; fix pasteboard error
+     (setq save-interprogram-paste-before-kill nil)
+
+     ;; fix ls --dired startup error
+     (setq dired-use-ls-dired nil)
+
+     ;; auto indentation toggle
+     ;; (electric-indent-mode 0) ; make return key not auto indent
+     (require 'package)
+
+     ;;fix the PATH variable in shell
+     (defun set-exec-path-from-shell-PATH ()
+       (let ((path-from-shell (shell-command-to-string "TERM=vt100 $SHELL -i -c 'echo $PATH'")))
+         (setenv "PATH" path-from-shell)
+         (setq exec-path (split-string path-from-shell path-separator))))
+
+     (when window-system (set-exec-path-from-shell-PATH))
+
+     ;; set backup directory
+     (setq backup-directory-alist `(("." . "~/.saves")))
+
+   #+END_SRC
+
+** keybindings
+
+   #+NAME: keybindings
+   #+BEGIN_SRC emacs-lisp :tangle no
+     ;; toggle whitespace
+     (global-set-key (kbd "C-x w") 'whitespace-mode)
+
+     ;; hippie expand completion
+     (global-set-key (kbd "M-/") 'hippie-expand)
+
+     ;; open eshell
+     (global-set-key (kbd "C-x t") 'eshell)
+
+     ;; rgrep
+     (global-set-key (kbd "C-x e") 'rgrep)
+
+     ;; open org directory
+     (global-set-key (kbd "C-c o")
+                     (lambda ()
+                       (interactive)
+                       (find-file "~/org/")))
+
+     ;; shift + arrow key to move between windows
+     (windmove-default-keybindings)
+
+     ;; disable default downcasing keybinding
+     (put 'downcase-word 'disabled t)
+   #+END_SRC
+   
+** preferences
+   
+   #+NAME: preferences
+   #+BEGIN_SRC emacs-lisp :tangle no
+     ;; prevent pop-ups on osx
+     (setq ns-pop-up-frames nil)
+
+     ;; use tabs instead of spaces
+     (setq-default indent-tabs-mode nil)
+
+     ;; set default tab-width to 2
+     (setq-default tab-width 2)
+
+     ;; Always ask for y/n keypress instead of typing out 'yes' or 'no'
+     (defalias 'yes-or-no-p 'y-or-n-p)
+
+     ;; get rid of left and right side-space
+     (set-fringe-mode 0)
+
+     ;; auto-close parens
+     (electric-pair-mode 1)
+
+     ;; fix eshell node repl weirdness
+     (setenv "NODE_NO_READLINE" "1")
+
+
+   #+END_SRC
+   
+** dired
+   
+   #+NAME: dired
+   #+BEGIN_SRC emacs-lisp :tangle no
+   ;; auto refresh buffers
+   (global-auto-revert-mode 1)
+
+   ;; also auto refresh dired, but be quiet about it
+   (setq global-auto-revert-non-file-buffers t)
+   (setq auto-revert-verbose nil)
+
+   #+END_SRC
+   
+   
+   #+END_SRC
+   
+** ace jump mode
+   #+NAME: ace-jump-mode 
+   #+BEGIN_SRC emacs-lisp :tangle no
+   (package-require 'ace-jump-mode)
+
+   ;; keybinding to exectute ace jump mode
+   (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+
+   #+END_SRC
+   
+** better defaults
+  #+NAME: better-defaults
+  #+BEGIN_SRC emacs-lisp :tangle no
+    (package-require 'better-defaults)
+  #+END_SRC
+  
+** coffeescript
+   #+NAME: coffeescript
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'coffee-mode)
+
+     ;; load coffee-mode on coffee files
+     (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+
+     (setq coffee-js-mode 'js2-mode)
+
+     ;; patch coffee-mode so coffee-compile-region pops up a new
+     ;; non-focused window instead of replacing the current buffer.
+     ;; from https://gitlab.com/bodil/emacs-d/blob/master/bodil/bodil-js.el
+     (eval-after-load "coffee-mode"
+       '(defun coffee-compile-region (start end)
+          "Compiles a region and displays the JS in another buffer."
+          (interactive "r")
+          (let ((buffer (get-buffer coffee-compiled-buffer-name)))
+            (when buffer (kill-buffer buffer)))
+          (call-process-region start end coffee-command nil
+                               (get-buffer-create coffee-compiled-buffer-name) nil "-s" "-p" "--bare")
+          (let ((buffer (get-buffer coffee-compiled-buffer-name)))
+            (with-current-buffer buffer
+              (funcall coffee-js-mode)
+              (goto-char (point-min)))
+            (display-buffer buffer))))
+
+     ;; treat cjsx files as coffeescript
+     (setq auto-mode-alist
+           (append '((".*\\.cjsx\\'" . coffee-mode))
+                   auto-mode-alist))
+
+     ;; highlight .eco files as html
+     (setq auto-mode-alist
+           (append '((".*\\.eco\\'" . html-mode))
+                   auto-mode-alist))
+
+   #+END_SRC
+   
+** stylus
+   #+NAME: stylus
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'stylus-mode)
+   #+END_SRC
+   
+** clojure
+   #+NAME: clojure
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'clojure-mode)
+     (package-require 'clojure-test-mode)
+     (package-require 'cider)
+     (package-require 'om-mode)
+
+     (add-to-list 'auto-mode-alist '("\\.cljs" . clojure-mode))
+
+     ;; (add-hook 'clojure-mode-hook (lambda () (om-mode 1)))
+
+
+   #+END_SRC
+   
+** elisp
+   #+NAME: elisp
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+   #+END_SRC
+   
+** haskell
+   #+NAME: haskell
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'haskell-mode)
+
+     (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+
+
+   #+END_SRC
+   
+** javascript
+   #+NAME: javascript
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'js2-mode)
+
+     (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
+     (setq-default js2-mode-indent-ignore-first-tab t)
+     (setq-default js2-show-parse-errors nil)
+     (setq-default js2-strict-inconsistent-return-warning nil)
+     (setq-default js2-strict-var-hides-function-arg-warning nil)
+     (setq-default js2-strict-missing-semi-warning nil)
+     (setq-default js2-strict-trailing-comma-warning nil)
+     (setq-default js2-strict-cond-assign-warning nil)
+     (setq-default js2-strict-var-redeclaration-warning nil)
+
+   #+END_SRC
+   
+** magit
+   #+NAME: magit 
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'magit)
+
+     (global-set-key (kbd "C-x g") 'magit-status)
+
+     ;; fix a weird magit issue with the wombat color scheme
+     ;; highlighting the selected hunk in diffs
+     (defun disable-magit-highlight-in-buffer ()
+       (face-remap-add-relative 'magit-item-highlight '()))
+
+     (add-hook 'magit-status-mode-hook 'disable-magit-highlight-in-buffer)
+
+   #+END_SRC
+   
+** org mode
+   #+NAME: org-mode
+   #+BEGIN_SRC emacs-lisp :tangle no
+     ;; alex-org.el --- org-mode settings
+     (package-require 'org)
+
+     ;; org mode key bindings
+     (global-set-key "\C-cl" 'org-store-link)
+     (global-set-key "\C-cc" 'org-capture)
+     (global-set-key "\C-ca" 'org-agenda)
+     (global-set-key "\C-cb" 'org-iswitchb)
+     (setq org-log-done t)
+     (setq org-log-done 'note)
+   #+END_SRC
+   
+** helm
+   #+NAME: helm   
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'helm)
+
+     (global-set-key (kbd "C-c h") 'helm-find-files)
+
+     ;; M-y to helm-show-kill-ring
+     ;; http://sachachua.com/blog/2014/12/emacs-m-y-helm-show-kill-ring/
+     (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+
+     (helm-mode 1)
+   #+END_SRC
+   
+** find files in project
+   #+NAME: fiplr
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'fiplr)
+
+     (setq fiplr-root-markers '(".git" ".svn"))
+
+     ;; ignore these in file finder
+     (setq fiplr-ignored-globs '((directories (".git" ".svn" "node_modules"))
+                                 (files ("*.jpg" "*.png" "*.zip" "*~"))))
+
+     ;; fuzzy file finder in project
+     (global-set-key (kbd "C-x f") 'fiplr-find-file)
+   #+END_SRC
+   
+** paredit
+   #+NAME: paredit
+   #+BEGIN_SRC emacs-lisp :tangle no
+
+     (package-require 'paredit)
+
+     (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+
+     (setq paredit-hooks
+           '(emacs-lisp-mode-hook
+             clojure-mode-hook))
+
+     (dolist (hook paredit-hooks)
+       (add-hook hook #'enable-paredit-mode))
+
+
+   #+END_SRC
+   
+** web mode
+   #+NAME: web-mode
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'web-mode)
+   #+END_SRC
+
+** rainbow mode
+   #+NAME: rainbow-mode
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'rainbow-mode)
+
+     (defun activate-rainbow-mode ()
+       (rainbow-mode 1))
+
+     (defun stylus-rainbow-mode ()
+       (when (and (stringp buffer-file-name)
+                  (string-match "\\.styl\\'" buffer-file-name))
+         (activate-rainbow-mode)))
+
+     ;; use rainbow-mode in css
+     (add-hook 'css-mode-hook 'activate-rainbow-mode)
+
+     ;; use rainbow-mode in stylus
+     (add-hook 'find-file-hook 'stylus-rainbow-mode)
+   #+END_SRC
+
+** yasnippet
+   #+NAME: yasnippet
+   #+BEGIN_SRC emacs-lisp :tangle no
+     ;; (package-require 'popup)
+     (package-require 'yasnippet)
+     (package-require 'yasnippet-bundle)
+     (yas-global-mode 1)
+     ;; (yas-initialize)
+
+     ;; prevent yasnippet from indenting
+     (setq yas-indent-line nil)
+
+     (setq yas-root-directory
+           (concat dotfiles-dir "snippets"))
+
+     ;; (yas-load-directory
+     ;;  (concat dotfiles-dir "snippets"))
+   #+END_SRC
+   
+** exec path from shell
+   #+NAME: exec-path
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'exec-path-from-shell)
+
+     ;; get PATH
+     (when (memq window-system '(mac ns))
+       (exec-path-from-shell-initialize))
+
+   #+END_SRC
+
+** =init.el=
+   #+BEGIN_SRC emacs-lisp :tangle yes :noweb no-export :exports code
+     <<package-init>>
+     <<keybindings>>
+     <<preferences>>
+     <<dired>>
+     <<ace-jump-mode>>
+     <<coffeescript>>
+     <<stylus>>
+     <<clojure>>
+     <<elisp>>
+     <<haskell>>
+     <<javascript>>
+     <<magit>>
+     <<org-mode>>
+     <<helm>>
+     <<fiplr>>
+     <<paredit>>
+     <<web-mode>>
+     <<rainbow-mode>>
+     <<yasnippet>>
+     <<exec-path>>
+   #+END_SRC
