@@ -330,6 +330,18 @@
 
    #+END_SRC
    
+** skewer mode
+#+NAME: skewer-mode
+#+BEGIN_SRC emacs-lisp :tangle no
+  ;; skewer-mode --- https://github.com/skeeto/skewer-mode
+  (package-require 'skewer-mode)
+
+  ;; add js2, html, and css hooks for skewer mode
+  (skewer-setup)
+
+
+#+END_SRC
+
 ** web mode
    #+NAME: web-mode
    #+BEGIN_SRC emacs-lisp :tangle no
@@ -411,6 +423,7 @@
      <<helm>>
      <<fiplr>>
      <<paredit>>
+     <<skewer-mode>>
      <<web-mode>>
      <<rainbow-mode>>
      <<yasnippet>>
