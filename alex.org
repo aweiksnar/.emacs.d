@@ -334,6 +334,8 @@
 #+NAME: skewer-mode
 #+BEGIN_SRC emacs-lisp :tangle no
   ;; skewer-mode --- https://github.com/skeeto/skewer-mode
+
+  (package-require 'simple-httpd)
   (package-require 'skewer-mode)
 
   ;; add js2, html, and css hooks for skewer mode

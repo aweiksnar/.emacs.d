@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: js.iife
+# key: iife
+# --
+
+(function(){
+  $0
+}());
