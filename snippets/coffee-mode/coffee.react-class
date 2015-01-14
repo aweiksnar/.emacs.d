@@ -8,4 +8,5 @@ module?.exports = React.createClass
   displayName: '$1'
 
   render: ->
-    $0
+    <div className="$0">
+    </div>
