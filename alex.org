@@ -382,6 +382,13 @@
      (add-hook 'find-file-hook 'stylus-rainbow-mode)
    #+END_SRC
 
+** nyan mode
+   #+NAME: nyan-mode
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'nyan-mode)
+     (nyan-mode 1)
+     (setq nyan-bar-length 16)
+   #+END_SRC
 ** yasnippet
    #+NAME: yasnippet
    #+BEGIN_SRC emacs-lisp :tangle no
@@ -455,6 +462,7 @@
      <<skewer-mode>>
      <<web-mode>>
      <<rainbow-mode>>
+     <<nyan-mode>>
      <<yasnippet>>
      <<org-present>>
      <<exec-path>>
