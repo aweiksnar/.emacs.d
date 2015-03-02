@@ -146,6 +146,13 @@
      ;; keybinding to exectute ace jump mode
      (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
+     ;; ignore dired metadata in ace jump char search
+     (add-hook 'dired-mode-hook
+               (lambda ()
+                 (setq-local ace-jump-search-filter
+                             (lambda ()
+                               (get-text-property (point) 'dired-filename)))))
+
      ;; ace window mode
 
      (package-require 'ace-window)
