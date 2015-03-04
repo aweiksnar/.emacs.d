@@ -2,4 +2,6 @@
 # name: js.function
 # key: fn
 # --
-function($1) {$0}
+function $1($2) {
+  $0
+}

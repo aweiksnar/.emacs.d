@@ -118,8 +118,6 @@
 
      ;; fix eshell node repl weirdness
      (setenv "NODE_NO_READLINE" "1")
-
-
    #+END_SRC
    
 ** dired
