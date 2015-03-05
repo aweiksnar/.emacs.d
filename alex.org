@@ -413,6 +413,19 @@
      ;;  (concat dotfiles-dir "snippets"))
    #+END_SRC
    
+** multiple cursors
+   #+NAME: yasnippet
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'multiple-cursors)
+
+     (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+
+     (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+     (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+     (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+   #+END_SRC
+
 ** org-present
    #+NAME: org-present
    #+BEGIN_SRC emacs-lisp :tangle no
