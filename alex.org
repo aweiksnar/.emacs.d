@@ -155,7 +155,7 @@
 
      (package-require 'ace-window)
      (global-set-key (kbd "M-p") 'ace-window)
-     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+     (setq aw-keys '(?q ?w ?e ?r ?t ?y ?u ?i ?o))
    #+END_SRC
 
 ** better defaults
