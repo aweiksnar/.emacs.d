@@ -394,6 +394,17 @@
      (nyan-mode 1)
      (setq nyan-bar-length 16)
    #+END_SRC
+
+** ag.el
+
+   #+NAME: ag.el
+   #+BEGIN_SRC emacs-lisp :tangle no
+     ;; the silver searcher --- https://github.com/Wilfred/ag.el
+     (package-require 'ag)
+     (global-set-key (kbd "C-x a") 'ag-project)
+
+   #+END_SRC
+
 ** yasnippet
    #+NAME: yasnippet
    #+BEGIN_SRC emacs-lisp :tangle no
