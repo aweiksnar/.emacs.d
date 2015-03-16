@@ -492,6 +492,7 @@
      <<web-mode>>
      <<rainbow-mode>>
      <<nyan-mode>>
+     <<ag.el>>
      <<yasnippet>>
      <<org-present>>
      <<exec-path>>
