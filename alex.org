@@ -425,7 +425,7 @@
    #+END_SRC
    
 ** multiple cursors
-   #+NAME: yasnippet
+   #+NAME: multiple-cursors
    #+BEGIN_SRC emacs-lisp :tangle no
      (package-require 'multiple-cursors)
 
@@ -437,6 +437,15 @@
 
    #+END_SRC
 
+** markdown mode
+   #+NAME: markdown-mode
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'markdown-mode)
+     (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+     (add-to-list 'auto-mode-alist '("\\.mdown\\'" . markdown-mode))
+     (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+   #+END_SRC
 ** org-present
    #+NAME: org-present
    #+BEGIN_SRC emacs-lisp :tangle no
@@ -494,6 +503,8 @@
      <<nyan-mode>>
      <<ag.el>>
      <<yasnippet>>
+     <<multiple-cursors>>
+     <<markdown-mode>>
      <<org-present>>
      <<exec-path>>
    #+END_SRC
