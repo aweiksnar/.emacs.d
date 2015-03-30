@@ -116,6 +116,9 @@
      ;; auto-close parens
      (electric-pair-mode 1)
 
+     ;; show matching paren pair
+     (show-paren-mode 1)
+
      ;; fix eshell node repl weirdness
      (setenv "NODE_NO_READLINE" "1")
    #+END_SRC
