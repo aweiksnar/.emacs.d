@@ -137,7 +137,7 @@
    #+END_SRC
    
 ** ace jump mode
-   #+NAME: ace-jump-mode 
+   #+NAME: ace-jump-mode
    #+BEGIN_SRC emacs-lisp :tangle no
      (package-require 'ace-jump-mode)
 
@@ -213,7 +213,6 @@
    #+NAME: clojure
    #+BEGIN_SRC emacs-lisp :tangle no
      (package-require 'clojure-mode)
-     (package-require 'clojure-test-mode)
      (package-require 'cider)
      (package-require 'om-mode)
 
@@ -410,7 +409,6 @@
    #+BEGIN_SRC emacs-lisp :tangle no
      ;; (package-require 'popup)
      (package-require 'yasnippet)
-     (package-require 'yasnippet-bundle)
      (yas-global-mode 1)
      ;; (yas-initialize)
 
