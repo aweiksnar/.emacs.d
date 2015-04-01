@@ -209,7 +209,10 @@
 ** stylus
    #+NAME: stylus
    #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'sws-mode)
      (package-require 'stylus-mode)
+     (add-to-list 'auto-mode-alist '("\\.styl\\'" . stylus-mode))
+
    #+END_SRC
    
 ** clojure
