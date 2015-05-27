@@ -10,6 +10,7 @@
      (setq custom-file "~/.emacs.d/custom.el")
      (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
      (load custom-file)
+     (set-cursor-color 'green)
 
      ;; disable menu-bar-mode, tool-bar-mode, scroll-bar-mode
      (dolist (mode '(menu-bar-mode tool-bar-mode scroll-bar-mode))
