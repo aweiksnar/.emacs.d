@@ -297,6 +297,10 @@
      ;; unset local key so I can use ace-jump-mode in org-mode
      (add-hook 'org-mode-hook
                (lambda () (local-unset-key (kbd "C-c SPC"))))
+
+     ;; indent content blocks with their headers
+     (setq org-startup-indented t)
+
    #+END_SRC
 
 ** helm
