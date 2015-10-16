@@ -246,6 +246,12 @@
 
    #+END_SRC
    
+** elm
+   #+NAME: elm
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'elm-mode)
+   #+END_SRC
+
 ** javascript
    #+NAME: javascript
    #+BEGIN_SRC emacs-lisp :tangle no
@@ -508,6 +514,7 @@
      <<clojure>>
      <<elisp>>
      <<haskell>>
+     <<elm>>
      <<javascript>>
      <<magit>>
      <<org-mode>>
