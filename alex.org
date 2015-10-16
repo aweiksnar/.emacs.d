@@ -252,6 +252,13 @@
      (package-require 'elm-mode)
    #+END_SRC
 
+** purescript
+   #+NAME: purescript
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'purescript-mode)
+     (package-require 'psci)
+   #+END_SRC
+
 ** javascript
    #+NAME: javascript
    #+BEGIN_SRC emacs-lisp :tangle no
@@ -515,6 +522,7 @@
      <<elisp>>
      <<haskell>>
      <<elm>>
+     <<purescript>>
      <<javascript>>
      <<magit>>
      <<org-mode>>
