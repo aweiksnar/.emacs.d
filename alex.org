@@ -257,6 +257,7 @@
    #+BEGIN_SRC emacs-lisp :tangle no
      (package-require 'purescript-mode)
      (package-require 'psci)
+     (add-hook 'purescript-mode-hook 'turn-on-purescript-indentation)
    #+END_SRC
 
 ** javascript
