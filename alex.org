@@ -23,7 +23,6 @@
      (dolist (source '(("melpa" . "http://melpa.org/packages/")
                        ("marmalade" . "http://marmalade-repo.org/packages/")))
        (add-to-list 'package-archives source t))
-     (package-initialize)
 
      ;; define a function to require packages
      (defun package-require (pkg)
@@ -32,7 +31,7 @@
          (package-install pkg)))
 
 
-     ;; set dotfiles-dir 
+     ;; set dotfiles-dir
      (setq dotfiles-dir (file-name-directory
                          (or (buffer-file-name) load-file-name)))
 
@@ -510,6 +509,13 @@
 
    #+END_SRC
 
+** beacon-mode
+   #+NAME: beacon-mode
+   #+BEGIN_SRC emacs-lisp :tangle no
+     ;; highlight cursor when scrolling
+     (package-require 'beacon)
+     (beacon-mode 1)
+   #+END_SRC
 ** =init.el=
    #+BEGIN_SRC emacs-lisp :tangle yes :noweb no-export :exports code
      <<package-init>>
@@ -540,4 +546,5 @@
      <<markdown-mode>>
      <<org-present>>
      <<exec-path>>
+     <<beacon-mode>>
    #+END_SRC

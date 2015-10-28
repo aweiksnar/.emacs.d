@@ -1,5 +1,7 @@
 ;;; init.el --- alex's init file
 
+(package-initialize)
+
 (require 'org-install)
 (require 'ob-tangle)
 (setq debug-on-error t)
