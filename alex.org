@@ -30,6 +30,7 @@
        (when (not (package-installed-p pkg))
          (package-install pkg)))
 
+     (package-initialize)
 
      ;; set dotfiles-dir
      (setq dotfiles-dir (file-name-directory
@@ -518,6 +519,7 @@
      ;; highlight cursor when scrolling
      (package-require 'beacon)
      (beacon-mode 1)
+     (setq beacon-size 20)
    #+END_SRC
 ** =init.el=
    #+BEGIN_SRC emacs-lisp :tangle yes :noweb no-export :exports code

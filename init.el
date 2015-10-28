@@ -1,6 +1,6 @@
 ;;; init.el --- alex's init file
 
-(package-initialize)
+;; (package-initialize) in alex.org, commented here for emacs
 
 (require 'org-install)
 (require 'ob-tangle)
