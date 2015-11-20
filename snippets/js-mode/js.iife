@@ -3,6 +3,6 @@
 # key: iife
 # --
 
-(function(){
+;(function(){
   $0
-}());
+}())

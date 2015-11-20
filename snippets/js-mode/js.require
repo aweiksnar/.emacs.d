@@ -2,4 +2,4 @@
 # name: js.require
 # key: req
 # --
-require("$1");
+require('$1')
