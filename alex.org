@@ -535,7 +535,6 @@
      <<purescript>>
      <<javascript>>
      <<magit>>
-     <<org-mode>>
      <<helm>>
      <<fiplr>>
      <<paredit>>
@@ -550,4 +549,5 @@
      <<org-present>>
      <<exec-path>>
      <<beacon-mode>>
+     <<org-mode>>
    #+END_SRC

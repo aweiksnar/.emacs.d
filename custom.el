@@ -18,7 +18,7 @@
  '(org-agenda-files (quote ("~/.emacs.d/alex.org")))
  '(package-selected-packages
    (quote
-    (beacon yasnippet web-mode stylus-mode skewer-mode rainbow-mode psci paredit org-present om-mode nyan-mode multiple-cursors markdown-mode magit helm haskell-mode fiplr expand-region exec-path-from-shell elm-mode coffee-mode cider ag ace-window ace-jump-mode)))
+    (simple-httpd js2-mode purescript-mode clojure-mode sws-mode beacon yasnippet web-mode stylus-mode skewer-mode rainbow-mode psci paredit org-present om-mode nyan-mode multiple-cursors markdown-mode magit helm haskell-mode fiplr expand-region exec-path-from-shell elm-mode coffee-mode cider ag ace-window ace-jump-mode)))
  '(safe-local-variable-values
    (quote
     ((eval setq web-mode-content-types-alist
