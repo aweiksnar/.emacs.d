@@ -519,6 +519,12 @@
      (beacon-mode 1)
      (setq beacon-size 20)
    #+END_SRC
+** company-mode
+   #+NAME: company-mode
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'company)
+     (add-hook 'after-init-hook 'global-company-mode)
+   #+END_SRC
 ** =init.el=
    #+BEGIN_SRC emacs-lisp :tangle yes :noweb no-export :exports code
      <<package-init>>
@@ -549,5 +555,6 @@
      <<org-present>>
      <<exec-path>>
      <<beacon-mode>>
+     <<company-mode>>
      <<org-mode>>
    #+END_SRC
