@@ -274,6 +274,9 @@
      (setq-default js2-strict-cond-assign-warning nil)
      (setq-default js2-strict-var-redeclaration-warning nil)
 
+     (add-hook 'js-mode-hook (lambda ()
+                               (setq-default js2-basic-offset 2)))
+
    #+END_SRC
    
 ** magit
@@ -299,6 +302,7 @@
    #+NAME: org-mode
    #+BEGIN_SRC emacs-lisp :tangle no
      ;; alex-org.el --- org-mode settings
+
      (package-require 'org)
 
      ;; org mode key bindings
@@ -308,6 +312,13 @@
      (global-set-key "\C-cb" 'org-iswitchb)
      (setq org-log-done t)
      (setq org-log-done 'note)
+
+
+     ;; debug conflicts - https://www.gnu.org/software/emacs/manual/html_node/org/Conflicts.html
+     (add-hook 'org-mode-hook
+               (lambda ()
+                 (org-set-local 'yas/trigger-key [tab])
+                 (define-key yas/keymap [tab] 'yas/next-field-or-maybe-expand)))
 
      ;; unset local key so I can use ace-jump-mode in org-mode
      (add-hook 'org-mode-hook
