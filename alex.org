@@ -536,6 +536,16 @@
      (package-require 'company)
      (add-hook 'after-init-hook 'global-company-mode)
    #+END_SRC
+
+** helpers
+   #+NAME: helpers
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (defun reload-init-file ()
+       (interactive)
+       (load user-init-file)
+       (message "☮ ☯ ☮ ✓ reloaded init.el ✓ ☮ ☯ ☮"))
+   #+END_SRC
+
 ** =init.el=
    #+BEGIN_SRC emacs-lisp :tangle yes :noweb no-export :exports code
      <<package-init>>
@@ -567,5 +577,6 @@
      <<exec-path>>
      <<beacon-mode>>
      <<company-mode>>
+     <<helpers>>
      <<org-mode>>
    #+END_SRC
