@@ -537,6 +537,12 @@
      (add-hook 'after-init-hook 'global-company-mode)
    #+END_SRC
 
+** restclient
+   #+NAME: restclient
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (package-require 'restclient)
+   #+END_SRC
+
 ** helpers
    #+NAME: helpers
    #+BEGIN_SRC emacs-lisp :tangle no
@@ -577,6 +583,7 @@
      <<exec-path>>
      <<beacon-mode>>
      <<company-mode>>
+     <<restclient>>
      <<helpers>>
      <<org-mode>>
    #+END_SRC
