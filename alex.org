@@ -343,19 +343,12 @@
      (helm-mode 1)
    #+END_SRC
    
-** find files in project
-   #+NAME: fiplr
+** find file in project
+   #+NAME: find-file-in-project
    #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'fiplr)
+     (package-require 'find-file-in-project)
 
-     (setq fiplr-root-markers '(".git" ".svn"))
-
-     ;; ignore these in file finder
-     (setq fiplr-ignored-globs '((directories (".git" ".svn" "node_modules"))
-                                 (files ("*.jpg" "*.png" "*.zip" "*~"))))
-
-     ;; fuzzy file finder in project
-     (global-set-key (kbd "C-x f") 'fiplr-find-file)
+     (global-set-key (kbd "C-x f") 'find-file-in-project)
    #+END_SRC
    
 ** paredit
@@ -569,7 +562,7 @@
      <<javascript>>
      <<magit>>
      <<helm>>
-     <<fiplr>>
+     <<find-file-in-project>>
      <<paredit>>
      <<skewer-mode>>
      <<web-mode>>

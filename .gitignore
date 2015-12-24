@@ -9,9 +9,11 @@ abbrev_defs
 recentf
 backups
 backups/*
+bookmarks
 auto-save-list
 elpa
 places
 .org*
 alex.el
 .sx/
+.mc-lists.el
