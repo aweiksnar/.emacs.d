@@ -1,59 +1,45 @@
-#+TITLE: my init file
+#+TITLE: Alex's init.el --- ☮ ☯ ☮
 #+AUTHOR: alex weiksnar
 
-* emacs
+* Emacs
 ** initialization stuffs
    #+NAME: package-init
    #+BEGIN_SRC emacs-lisp :tangle no
-     ;; keep settings added by Custom out of my init file
-
+     ;; keep customizations in a separate file
      (setq custom-file "~/.emacs.d/custom.el")
      (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
      (load custom-file)
      (set-cursor-color 'red)
 
-     ;; disable menu-bar-mode, tool-bar-mode, scroll-bar-mode
+     (setq dotfiles-dir (file-name-directory
+                              (or (buffer-file-name) load-file-name)))
+
+     ;; get packages from from melpa
+     (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+
+     ;; use package --- https://github.com/jwiegley/use-package
+     (defun package-require (pkg)
+            "Install a package only if it's not already installed."
+            (when (not (package-installed-p pkg))
+              (package-install pkg)))
+
+     ;; Setup use-package function
+     (package-require 'use-package)
+
+     (eval-when-compile
+       (require 'use-package))
+     (require 'diminish)
+     (require 'bind-key)
+     (setq use-package-always-ensure t)
+
+     ; Disable gui features
      (dolist (mode '(menu-bar-mode tool-bar-mode scroll-bar-mode))
        (when (fboundp mode) (funcall mode -1)))
-
-
-     ;; get packages from from melpa and marmalade
-     (require 'package)
-     (setq package-enable-at-startup nil)
-     (dolist (source '(("melpa" . "http://melpa.org/packages/")
-                       ("marmalade" . "http://marmalade-repo.org/packages/")))
-       (add-to-list 'package-archives source t))
-
-     ;; define a function to require packages
-     (defun package-require (pkg)
-       "Install a package only if it's not already installed."
-       (when (not (package-installed-p pkg))
-         (package-install pkg)))
-
-     (package-initialize)
-
-     ;; set dotfiles-dir
-     (setq dotfiles-dir (file-name-directory
-                         (or (buffer-file-name) load-file-name)))
-
-     ;; winner mode
-     (when (fboundp 'winner-mode)
-       (winner-mode 1))
-
-     ;; abbrev mode
-     ;; (setq-default abbrev-mode t)
 
      ;; fix pasteboard error
      (setq save-interprogram-paste-before-kill nil)
 
-     ;; fix ls --dired startup error
-     (setq dired-use-ls-dired nil)
-
-     ;; auto indentation toggle
-     ;; (electric-indent-mode 0) ; make return key not auto indent
-     (require 'package)
-
-     ;;fix the PATH variable in shell
+     ;; fix the PATH variable in shell
      (defun set-exec-path-from-shell-PATH ()
        (let ((path-from-shell (shell-command-to-string "TERM=vt100 $SHELL -i -c 'echo $PATH'")))
          (setenv "PATH" path-from-shell)
@@ -84,9 +70,9 @@
 
      ;; open org directory
      (global-set-key (kbd "C-c o")
-                     (lambda ()
-                       (interactive)
-                       (find-file "~/org/")))
+         (lambda ()
+           (interactive)
+           (find-file "~/org/")))
 
      ;; shift + arrow key to move between windows
      (windmove-default-keybindings)
@@ -122,263 +108,181 @@
 
      ;; fix eshell node repl weirdness
      (setenv "NODE_NO_READLINE" "1")
+
+     ;; navigate window history with C-c arrow
+     (when (fboundp 'winner-mode)
+       (winner-mode 1))
+
+
    #+END_SRC
    
 ** dired
    
    #+NAME: dired
    #+BEGIN_SRC emacs-lisp :tangle no
-   ;; auto refresh buffers
-   (global-auto-revert-mode 1)
+     ;; auto refresh buffers
+     (global-auto-revert-mode 1)
 
-   ;; also auto refresh dired, but be quiet about it
-   (setq global-auto-revert-non-file-buffers t)
-   (setq auto-revert-verbose nil)
+     ;; also auto refresh dired, but be quiet about it
+     (setq global-auto-revert-non-file-buffers t)
+     (setq auto-revert-verbose nil)
 
-   #+END_SRC
-   
-   
-   #+END_SRC
-   
-** ace jump mode
-   #+NAME: ace-jump-mode
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'ace-jump-mode)
+     ;; fix ls --dired startup error
+     (setq dired-use-ls-dired nil)
 
-     ;; keybinding to exectute ace jump mode
-     (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
-
-     ;; ignore dired metadata in ace jump char search
+     ;; ignore dired metadata in ace jumps
      (add-hook 'dired-mode-hook
                (lambda ()
                  (setq-local ace-jump-search-filter
                              (lambda ()
                                (get-text-property (point) 'dired-filename)))))
 
-     ;; ace window mode
-
-     (package-require 'ace-window)
-     (global-set-key (kbd "M-p") 'ace-window)
-     (setq aw-keys '(?q ?w ?e ?r ?t ?y ?u ?i ?o))
-   #+END_SRC
-
-** better defaults
-  #+NAME: better-defaults
-  #+BEGIN_SRC emacs-lisp :tangle no
-    (package-require 'better-defaults)
-  #+END_SRC
-  
-** coffeescript
-   #+NAME: coffeescript
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'coffee-mode)
-
-     ;; load coffee-mode on coffee files
-     (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
-
-     (setq coffee-js-mode 'js2-mode)
-
-     ;; patch coffee-mode so coffee-compile-region pops up a new
-     ;; non-focused window instead of replacing the current buffer.
-     ;; from https://gitlab.com/bodil/emacs-d/blob/master/bodil/bodil-js.el
-     (eval-after-load "coffee-mode"
-       '(defun coffee-compile-region (start end)
-          "Compiles a region and displays the JS in another buffer."
-          (interactive "r")
-          (let ((buffer (get-buffer coffee-compiled-buffer-name)))
-            (when buffer (kill-buffer buffer)))
-          (call-process-region start end coffee-command nil
-                               (get-buffer-create coffee-compiled-buffer-name) nil "-s" "-p" "--bare")
-          (let ((buffer (get-buffer coffee-compiled-buffer-name)))
-            (with-current-buffer buffer
-              (funcall coffee-js-mode)
-              (goto-char (point-min)))
-            (display-buffer buffer))))
-
-     ;; treat cjsx files as coffeescript
-     (setq auto-mode-alist
-           (append '((".*\\.cjsx\\'" . coffee-mode))
-                   auto-mode-alist))
-
-     ;; highlight .eco files as html
-     (setq auto-mode-alist
-           (append '((".*\\.eco\\'" . html-mode))
-                   auto-mode-alist))
-
    #+END_SRC
    
-** stylus
-   #+NAME: stylus
+** magit
+   #+NAME: magit
    #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'sws-mode)
-     (package-require 'stylus-mode)
-     (add-to-list 'auto-mode-alist '("\\.styl\\'" . stylus-mode))
+     (use-package magit
+       :ensure t
+       :bind (("C-x g" . magit-status))
+       :config
+
+       ;; revert buffers in magit without notification
+       (setq magit-revert-buffers 'silent)
+
+       ;; fix a weird magit issue with the wombat color scheme
+       ;; highlighting the selected hunk in diffs
+       (defun disable-magit-highlight-in-buffer ()
+         (face-remap-add-relative 'magit-item-highlight '()))
+       (add-hook 'magit-status-mode-hook 'disable-magit-highlight-in-buffer))
+   #+END_SRC
+
+** helm
+   #+NAME: helm
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package async)
+     (use-package helm
+       :ensure t
+       :bind (("M-x" . helm-M-x)
+              ("C-c h" . helm-find-files)
+              ("C-x b" . helm-buffers-list)
+              ("C-x C-f" . helm-find-files)
+              ("M-y" . helm-show-kill-ring))
+       :config
+       (helm-autoresize-mode 1)
+       (helm-mode 1))
+   #+END_SRC
+
+** ace jump
+   #+NAME: ace-jump-mode
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package ace-jump-mode
+       :ensure t
+       :bind ("C-c SPC" . ace-jump-mode))
+
+     (use-package ace-window
+       :ensure t
+       :bind ("M-p" . ace-window)
+       :config
+       (setq aw-keys '(?q ?w ?e ?r ?t ?y ?u ?i ?o)))
 
    #+END_SRC
-   
-** clojure
-   #+NAME: clojure
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'clojure-mode)
-     (package-require 'cider)
-     (package-require 'om-mode)
 
-     ;; (add-hook 'clojure-mode-hook (lambda () (om-mode 1)))
-
-
-   #+END_SRC
-   
 ** elisp
    #+NAME: elisp
    #+BEGIN_SRC emacs-lisp :tangle no
      (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
    #+END_SRC
    
-** haskell
-   #+NAME: haskell
+** clojure
+   #+NAME: clojure
    #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'haskell-mode)
-
-     (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-
-
+     (use-package clojure-mode)
+     (use-package cider)
+   #+END_SRC
+   
+** coffeescript
+   #+NAME: coffeescript
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package coffee-mode
+       :mode (("\\.coffee$" . coffee-mode)
+              (".*\\.cjsx\\'" . coffee-mode))
+       :config
+       (setq coffee-js-mode 'js2-mode)
+       (defun coffee-compile-region (start end)
+         "Compiles a region and displays the JS in another buffer."
+         (interactive "r")
+         (let ((buffer (get-buffer coffee-compiled-buffer-name)))
+           (when buffer (kill-buffer buffer)))
+         (call-process-region start end coffee-command nil
+                              (get-buffer-create coffee-compiled-buffer-name) nil "-s" "-p" "--bare")
+         (let ((buffer (get-buffer coffee-compiled-buffer-name)))
+           (with-current-buffer buffer
+             (funcall coffee-js-mode)
+             (goto-char (point-min)))
+           (display-buffer buffer))))
+   #+END_SRC
+   
+** stylus
+   #+NAME: stylus
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package sws-mode)
+     (use-package stylus-mode
+       :mode ("\\.styl\\'" . stylus-mode))
    #+END_SRC
    
 ** elm
    #+NAME: elm
    #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'elm-mode)
+     (use-package elm-mode)
    #+END_SRC
 
 ** purescript
    #+NAME: purescript
    #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'purescript-mode)
-     (package-require 'psci)
-     (add-hook 'purescript-mode-hook 'turn-on-purescript-indentation)
+     (use-package purescript-mode
+       :config
+       (add-hook 'purescript-mode-hook 'turn-on-purescript-indentation))
+     (use-package psci)
    #+END_SRC
 
-** javascript
-   #+NAME: javascript
+** haskell
+   #+NAME: haskell
    #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'js2-mode)
-
-     (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-
-     (setq-default js2-mode-indent-ignore-first-tab t)
-     (setq-default js2-show-parse-errors nil)
-     (setq-default js2-strict-inconsistent-return-warning nil)
-     (setq-default js2-strict-var-hides-function-arg-warning nil)
-     (setq-default js2-strict-missing-semi-warning nil)
-     (setq-default js2-strict-trailing-comma-warning nil)
-     (setq-default js2-strict-cond-assign-warning nil)
-     (setq-default js2-strict-var-redeclaration-warning nil)
-
-     (add-hook 'js-mode-hook (lambda ()
-                               (setq-default js2-basic-offset 2)))
-
-   #+END_SRC
-   
-** magit
-   #+NAME: magit 
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'magit)
-
-     (global-set-key (kbd "C-x g") 'magit-status)
-
-     ;; revert buffers in magit without notification
-     (setq magit-revert-buffers 'silent)
-
-     ;; fix a weird magit issue with the wombat color scheme
-     ;; highlighting the selected hunk in diffs
-     (defun disable-magit-highlight-in-buffer ()
-       (face-remap-add-relative 'magit-item-highlight '()))
-
-     (add-hook 'magit-status-mode-hook 'disable-magit-highlight-in-buffer)
-
-   #+END_SRC
-   
-** org mode
-   #+NAME: org-mode
-   #+BEGIN_SRC emacs-lisp :tangle no
-     ;; alex-org.el --- org-mode settings
-
-     (package-require 'org)
-
-     ;; org mode key bindings
-     (global-set-key "\C-cl" 'org-store-link)
-     (global-set-key "\C-cc" 'org-capture)
-     (global-set-key "\C-ca" 'org-agenda)
-     (global-set-key "\C-cb" 'org-iswitchb)
-     (setq org-log-done t)
-     (setq org-log-done 'note)
-
-
-     ;; debug conflicts - https://www.gnu.org/software/emacs/manual/html_node/org/Conflicts.html
-     (add-hook 'org-mode-hook
-               (lambda ()
-                 (org-set-local 'yas/trigger-key [tab])
-                 (define-key yas/keymap [tab] 'yas/next-field-or-maybe-expand)))
-
-     ;; unset local key so I can use ace-jump-mode in org-mode
-     (add-hook 'org-mode-hook
-               (lambda () (local-unset-key (kbd "C-c SPC"))))
-
-     ;; indent content blocks with their headers
-     (setq org-startup-indented t)
-
-   #+END_SRC
-
-** helm
-   #+NAME: helm   
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'helm)
-
-     (global-set-key (kbd "C-c h") 'helm-find-files)
-
-     ;; M-y to helm-show-kill-ring
-     ;; http://sachachua.com/blog/2014/12/emacs-m-y-helm-show-kill-ring/
-     (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-
-     (helm-mode 1)
+     (use-package haskell-mode
+       :config
+       (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation))
    #+END_SRC
    
 ** find file in project
    #+NAME: find-file-in-project
    #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'find-file-in-project)
-
-     (global-set-key (kbd "C-x f") 'find-file-in-project)
+     (use-package find-file-in-project
+       :bind ("C-x f" . find-file-in-project))
    #+END_SRC
    
 ** paredit
    #+NAME: paredit
    #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package paredit
+       :config
+       (setq paredit-hooks
+             '(emacs-lisp-mode-hook
+               clojure-mode-hook))
 
-     (package-require 'paredit)
-
-     (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
-
-     (setq paredit-hooks
-           '(emacs-lisp-mode-hook
-             clojure-mode-hook))
-
-     (dolist (hook paredit-hooks)
-       (add-hook hook #'enable-paredit-mode))
-
-
+       (dolist (hook paredit-hooks)
+         (add-hook hook #'enable-paredit-mode)))
    #+END_SRC
    
 ** skewer mode
 #+NAME: skewer-mode
 #+BEGIN_SRC emacs-lisp :tangle no
-  ;; skewer-mode --- https://github.com/skeeto/skewer-mode
+  ;; https://github.com/skeeto/skewer-mode
 
-  (package-require 'simple-httpd)
-  (package-require 'skewer-mode)
-
-  ;; add js2, html, and css hooks for skewer mode
-  (skewer-setup)
+  (use-package simple-httpd)
+  (use-package skewer-mode
+    :config
+    (skewer-setup))
 
 
 #+END_SRC
@@ -388,152 +292,153 @@
    #+BEGIN_SRC emacs-lisp :tangle no
      ;; web-mode http://web-mode.org/
 
-     (package-require 'web-mode)
-
-     (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-     (add-to-list 'auto-mode-alist '("\\.eco\\'" . web-mode))
-     (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-     (setq web-mode-indent-style 4)
-     (setq web-mode-markup-indent-offset 4)
-     (setq web-mode-css-indent-offset 2)
-     (setq web-mode-code-indent-offset 4)
-   #+END_SRC
-
-** rainbow mode
-   #+NAME: rainbow-mode
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'rainbow-mode)
-
-     (defun activate-rainbow-mode ()
-       (rainbow-mode 1))
-
-     (defun stylus-rainbow-mode ()
-       (when (and (stringp buffer-file-name)
-                  (string-match "\\.styl\\'" buffer-file-name))
-         (activate-rainbow-mode)))
-
-     ;; use rainbow-mode in css
-     (add-hook 'css-mode-hook 'activate-rainbow-mode)
-
-     ;; use rainbow-mode in stylus
-     (add-hook 'find-file-hook 'stylus-rainbow-mode)
+     (use-package web-mode
+       :mode (("\\.html?\\'" . web-mode)
+              ("\\.eco\\'" . web-mode)
+              ("\\.erb\\'" . web-mode))
+       :config
+       (setq web-mode-indent-style 2)
+       (setq web-mode-markup-indent-offset 2)
+       (setq web-mode-css-indent-offset 2)
+       (setq web-mode-code-indent-offset 2))
    #+END_SRC
 
 ** nyan mode
    #+NAME: nyan-mode
    #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'nyan-mode)
-     (nyan-mode 1)
-     (setq nyan-bar-length 16)
+     (use-package nyan-mode
+       :config
+       (nyan-mode 1)
+       (setq nyan-bar-length 16))
    #+END_SRC
 
-** ag.el
-
-   #+NAME: ag.el
+** rainbow mode
+   #+NAME: rainbow-mode
    #+BEGIN_SRC emacs-lisp :tangle no
-     ;; the silver searcher --- https://github.com/Wilfred/ag.el
-     (package-require 'ag)
-     (global-set-key (kbd "C-x a") 'ag-project)
+     (use-package rainbow-mode
+       :config
+       (defun activate-rainbow-mode ()
+         (rainbow-mode 1))
 
-   #+END_SRC
+       (defun stylus-rainbow-mode ()
+         (when (and (stringp buffer-file-name)
+                    (string-match "\\.styl\\'" buffer-file-name))
+           (activate-rainbow-mode)))
 
-** yasnippet
-   #+NAME: yasnippet
-   #+BEGIN_SRC emacs-lisp :tangle no
-     ;; (package-require 'popup)
-     (package-require 'yasnippet)
-     (yas-global-mode 1)
-     ;; (yas-initialize)
-
-     ;; prevent yasnippet from indenting
-     (setq yas-indent-line nil)
-
-     (setq yas-root-directory
-           (concat dotfiles-dir "snippets"))
-
-     ;; (yas-load-directory
-     ;;  (concat dotfiles-dir "snippets"))
-   #+END_SRC
-   
-** multiple cursors
-   #+NAME: multiple-cursors
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'multiple-cursors)
-
-     (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-
-     (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-     (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-     (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-
-   #+END_SRC
-
-** expand region
-   #+NAME: multiple-cursors
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'expand-region)
-     (global-set-key (kbd "C-=") 'er/expand-region)
-   #+END_SRC
-** markdown mode
-   #+NAME: markdown-mode
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'markdown-mode)
-     (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-     (add-to-list 'auto-mode-alist '("\\.mdown\\'" . markdown-mode))
-     (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-
-   #+END_SRC
-** org-present
-   #+NAME: org-present
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'org-present)
-
-     (eval-after-load "org-present"
-       '(progn
-          (add-hook 'org-present-mode-hook
-                    (lambda ()
-                      (org-present-big)
-                      (org-display-inline-images)
-                      (org-present-hide-cursor)
-                      (org-present-read-only)))
-          (add-hook 'org-present-mode-quit-hook
-                    (lambda ()
-                      (org-present-small)
-                      (org-remove-inline-images)
-                      (org-present-show-cursor)
-                      (org-present-read-write)))))
+       (add-hook 'css-mode-hook 'activate-rainbow-mode)
+       (add-hook 'find-file-hook 'stylus-rainbow-mode))
    #+END_SRC
 
 ** exec path from shell
    #+NAME: exec-path
    #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'exec-path-from-shell)
+     (use-package exec-path-from-shell
+       :init
+       (when (memq window-system '(mac ns))
+            (exec-path-from-shell-initialize)))
+   #+END_SRC
+** ag
 
-     ;; get PATH
-     (when (memq window-system '(mac ns))
-       (exec-path-from-shell-initialize))
+   #+NAME: ag.el
+   #+BEGIN_SRC emacs-lisp :tangle no
+     ;; the silver searcher --- https://github.com/Wilfred/ag.el
+     (use-package ag
+       :config
+       (global-set-key (kbd "C-x a") 'ag-project))
+   #+END_SRC
 
+** yasnippet
+   #+NAME: yasnippet
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package yasnippet
+       :config
+       (yas-global-mode 1)
+       ;; prevent yasnippet from indenting
+       (setq yas-indent-line nil)
+       (setq yas-root-directory
+                (concat dotfiles-dir "snippets")))
+   #+END_SRC
+   
+** multiple cursors
+   #+NAME: multiple-cursors
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package multiple-cursors
+       :config
+       (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+
+       (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+       (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+       (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
+   #+END_SRC
+
+** expand region
+   #+NAME: multiple-cursors
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package expand-region
+       :bind ("C-=" . er/expand-region))
+   #+END_SRC
+** markdown mode
+   #+NAME: markdown-mode
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package markdown-mode
+       :mode (("\\.markdown\\'" . markdown-mode)
+              ("\\.mdown\\'" . markdown-mode)
+              ("\\.md\\'" . markdown-mode)))
+   #+END_SRC
+** org mode
+   #+NAME: org-mode
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package org
+       :pin manual
+       :config
+      (eval-after-load "org"
+        '(progn
+           (add-hook 'org-mode-hook
+                 (lambda () (local-unset-key (kbd "C-c SPC"))))
+           (setq org-startup-indented t))))
+
+   #+END_SRC
+
+** org-present
+   #+NAME: org-present
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package org-present
+       :config
+       (add-hook 'org-present-mode-hook
+                 (lambda ()
+                   (org-present-big)
+                   (org-display-inline-images)
+                   (org-present-hide-cursor)
+                   (org-present-read-only)))
+       (add-hook 'org-present-mode-quit-hook
+                 (lambda ()
+                   (org-present-small)
+                   (org-remove-inline-images)
+                   (org-present-show-cursor)
+                   (org-present-read-write))))
    #+END_SRC
 
 ** beacon-mode
    #+NAME: beacon-mode
    #+BEGIN_SRC emacs-lisp :tangle no
      ;; highlight cursor when scrolling
-     (package-require 'beacon)
-     (beacon-mode 1)
-     (setq beacon-size 20)
+     (use-package beacon
+       :config
+       (beacon-mode 1)
+       (setq beacon-size 20))
    #+END_SRC
 ** company-mode
    #+NAME: company-mode
    #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'company)
-     (add-hook 'after-init-hook 'global-company-mode)
+     (use-package company
+       :config
+       (add-hook 'after-init-hook 'global-company-mode))
    #+END_SRC
 
 ** restclient
    #+NAME: restclient
    #+BEGIN_SRC emacs-lisp :tangle no
-     (package-require 'restclient)
+     (use-package restclient)
    #+END_SRC
 
 ** helpers
@@ -542,7 +447,7 @@
      (defun reload-init-file ()
        (interactive)
        (load user-init-file)
-       (message "☮ ☯ ☮ ✓ reloaded init.el ✓ ☮ ☯ ☮"))
+       (message "reloaded init.el ✓ ☮ ☯ ☮"))
    #+END_SRC
 
 ** =init.el=

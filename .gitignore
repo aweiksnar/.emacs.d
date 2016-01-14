@@ -15,5 +15,8 @@ elpa
 places
 .org*
 alex.el
+dev-init.el
 .sx/
 .mc-lists.el
+ido.*
+smex-items
