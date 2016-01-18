@@ -231,6 +231,13 @@
        :mode ("\\.styl\\'" . stylus-mode))
    #+END_SRC
    
+** sass
+
+   #+NAME: sass
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package sass-mode)
+   #+END_SRC
+
 ** elm
    #+NAME: elm
    #+BEGIN_SRC emacs-lisp :tangle no
@@ -459,6 +466,7 @@
      <<ace-jump-mode>>
      <<coffeescript>>
      <<stylus>>
+     <<sass>>
      <<clojure>>
      <<elisp>>
      <<haskell>>
