@@ -201,6 +201,24 @@
      (use-package cider)
    #+END_SRC
    
+** javascript
+   #+NAME: javascript
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package js2-mode
+       :mode ("\\.js$" . js2-mode)
+       :config
+       (setq-default js2-mode-indent-ignore-first-tab t)
+       (setq-default js2-show-parse-errors nil)
+       (setq-default js2-strict-inconsistent-return-warning nil)
+       (setq-default js2-strict-var-hides-function-arg-warning nil)
+       (setq-default js2-strict-missing-semi-warning nil)
+       (setq-default js2-strict-trailing-comma-warning nil)
+       (setq-default js2-strict-cond-assign-warning nil)
+       (setq-default js2-strict-var-redeclaration-warning nil)
+
+       (add-hook 'js-mode-hook (lambda ()
+                                 (setq-default js2-basic-offset 2))))
+   #+END_SRC
 ** coffeescript
    #+NAME: coffeescript
    #+BEGIN_SRC emacs-lisp :tangle no
