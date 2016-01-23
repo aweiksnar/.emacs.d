@@ -271,6 +271,11 @@
      (use-package psci)
    #+END_SRC
 
+** racket
+#+NAME: racket
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package racket-mode)
+#+END_SRC
 ** haskell
    #+NAME: haskell
    #+BEGIN_SRC emacs-lisp :tangle no
@@ -487,6 +492,7 @@
      <<sass>>
      <<clojure>>
      <<elisp>>
+     <<racket>>
      <<haskell>>
      <<elm>>
      <<purescript>>
