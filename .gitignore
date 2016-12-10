@@ -20,3 +20,4 @@ dev-init.el
 .mc-lists.el
 ido.*
 smex-items
+ac-comphist.dat

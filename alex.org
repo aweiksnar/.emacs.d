@@ -460,11 +460,11 @@
        (setq beacon-size 20))
    #+END_SRC
 ** company-mode
-   #+NAME: company-mode
+   #+NAME: auto-complete
    #+BEGIN_SRC emacs-lisp :tangle no
-     (use-package company
+     (use-package auto-complete
        :config
-       (add-hook 'after-init-hook 'global-company-mode))
+       (add-hook 'after-init-hook 'ac-config-default))
    #+END_SRC
 
 ** restclient
@@ -514,7 +514,7 @@
      <<org-present>>
      <<exec-path>>
      <<beacon-mode>>
-     <<company-mode>>
+     <<auto-complete>>
      <<restclient>>
      <<helpers>>
      <<org-mode>>
