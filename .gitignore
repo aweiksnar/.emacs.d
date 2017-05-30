@@ -21,3 +21,4 @@ dev-init.el
 ido.*
 smex-items
 ac-comphist.dat
+network-security.data
