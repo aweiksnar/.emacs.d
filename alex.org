@@ -85,6 +85,8 @@
    
    #+NAME: preferences
    #+BEGIN_SRC emacs-lisp :tangle no
+     (set-default-font "Iosevka")
+
      ;; prevent pop-ups on osx
      (setq ns-pop-up-frames nil)
 
