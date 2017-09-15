@@ -9,7 +9,7 @@
      (setq custom-file "~/.emacs.d/custom.el")
      (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
      (load custom-file)
-     (set-cursor-color 'red)
+     (set-cursor-color "#FF0000")
 
      (setq dotfiles-dir (file-name-directory
                               (or (buffer-file-name) load-file-name)))
@@ -30,6 +30,7 @@
        (require 'use-package))
      (require 'diminish)
      (require 'bind-key)
+     (require 'fringe)
      (setq use-package-always-ensure t)
 
      ; Disable gui features
