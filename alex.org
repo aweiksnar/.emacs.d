@@ -280,6 +280,13 @@
 #+BEGIN_SRC emacs-lisp :tangle no
   (use-package racket-mode)
 #+END_SRC
+** geiser
+#+NAME: geiser
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package geiser
+    :config (setq geiser-active-implementations '(guile)))
+#+END_SRC
+
 ** haskell
    #+NAME: haskell
    #+BEGIN_SRC emacs-lisp :tangle no
@@ -302,7 +309,8 @@
        :config
        (setq paredit-hooks
              '(emacs-lisp-mode-hook
-               clojure-mode-hook))
+               clojure-mode-hook
+               geiser-mode-hook))
 
        (dolist (hook paredit-hooks)
          (add-hook hook #'enable-paredit-mode)))
@@ -498,6 +506,7 @@
      <<sass>>
      <<clojure>>
      <<elisp>>
+     <<geiser>>
      <<racket>>
      <<haskell>>
      <<elm>>
