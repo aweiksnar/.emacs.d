@@ -173,6 +173,8 @@
               ("C-x C-f" . helm-find-files)
               ("M-y" . helm-show-kill-ring))
        :config
+       (setq helm-mode-fuzzy-match t)
+       (setq helm-completion-in-region-fuzzy-match t)
        (helm-autoresize-mode 1)
        (helm-mode 1))
    #+END_SRC
