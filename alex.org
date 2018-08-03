@@ -161,22 +161,15 @@
        (add-hook 'magit-status-mode-hook 'disable-magit-highlight-in-buffer))
    #+END_SRC
 
-** helm
-   #+NAME: helm
+** ivy
+   #+NAME: ivy
    #+BEGIN_SRC emacs-lisp :tangle no
-     (use-package async)
-     (use-package helm
+     (use-package ivy
        :ensure t
-       :bind (("M-x" . helm-M-x)
-              ("C-c h" . helm-find-files)
-              ("C-x b" . helm-buffers-list)
-              ("C-x C-f" . helm-find-files)
-              ("M-y" . helm-show-kill-ring))
        :config
-       (setq helm-mode-fuzzy-match t)
-       (setq helm-completion-in-region-fuzzy-match t)
-       (helm-autoresize-mode 1)
-       (helm-mode 1))
+       (setq ivy-use-virtual-buffers t)
+       (setq ivy-count-format "(%d/%d) ")
+       (ivy-mode 1))
    #+END_SRC
 
 ** ace jump
@@ -515,7 +508,7 @@
      <<purescript>>
      <<javascript>>
      <<magit>>
-     <<helm>>
+     <<ivy>>
      <<find-file-in-project>>
      <<paredit>>
      <<skewer-mode>>
