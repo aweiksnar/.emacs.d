@@ -86,8 +86,8 @@
    #+NAME: preferences
    #+BEGIN_SRC emacs-lisp :tangle no
      ;; set default font
-     (set-default-font "Iosevka")
-     (add-to-list 'default-frame-alist '(font . "Iosevka"))
+     (set-default-font "Iosevka 18")
+     (add-to-list 'default-frame-alist '(font . "Iosevka 18"))
 
      ;; prevent pop-ups on osx
      (setq ns-pop-up-frames nil)
@@ -116,8 +116,6 @@
      ;; navigate window history with C-c arrow
      (when (fboundp 'winner-mode)
        (winner-mode 1))
-
-
    #+END_SRC
    
 ** dired
