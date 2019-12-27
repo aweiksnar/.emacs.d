@@ -22,3 +22,6 @@ ido.*
 smex-items
 ac-comphist.dat
 network-security.data
+.lsp-session-*
+/speed-type
+/transient

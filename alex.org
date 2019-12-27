@@ -187,6 +187,27 @@
 
    #+END_SRC
 
+** lsp
+   #+NAME: lsp
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package lsp-mode
+       :ensure t
+       :commands (lsp lsp-deferred)
+       :hook (go-mode . lsp-deferred))
+
+     ;; Set up before-save hooks to format buffer and add/delete imports.
+     ;; Make sure you don't have other gofmt/goimports hooks enabled.
+     (defun lsp-go-install-save-hooks ()
+       (add-hook 'before-save-hook #'lsp-format-buffer t t)
+       (add-hook 'before-save-hook #'lsp-organize-imports t t))
+     (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+
+     ;; Optional - provides fancier overlays.
+     (use-package lsp-ui
+       :ensure t
+       :commands lsp-ui-mode)
+   #+END_SRC
+
 ** elisp
    #+NAME: elisp
    #+BEGIN_SRC emacs-lisp :tangle no
@@ -475,9 +496,15 @@
 ** company-mode
    #+NAME: auto-complete
    #+BEGIN_SRC emacs-lisp :tangle no
-     (use-package auto-complete
+     (use-package company
+       :ensure t
        :config
-       (add-hook 'after-init-hook 'ac-config-default))
+       (global-set-key (kbd "M-n") 'company-complete))
+
+     ;; company-lsp integrates company mode completion with lsp-mode.
+     (use-package company-lsp
+       :ensure t
+       :commands company-lsp)
    #+END_SRC
 
 ** restclient
@@ -502,6 +529,7 @@
      <<preferences>>
      <<dired>>
      <<ace-jump-mode>>
+     <<lsp>>
      <<coffeescript>>
      <<stylus>>
      <<sass>>
