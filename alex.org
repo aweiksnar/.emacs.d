@@ -255,6 +255,12 @@
      (use-package sass-mode)
    #+END_SRC
 
+** go
+   #+NAME: golang
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package go-mode)
+   #+END_SRC
+
 ** elm
    #+NAME: elm
    #+BEGIN_SRC emacs-lisp :tangle no
@@ -504,6 +510,7 @@
      <<geiser>>
      <<racket>>
      <<haskell>>
+     <<golang>>
      <<elm>>
      <<purescript>>
      <<javascript>>
@@ -527,3 +534,4 @@
      <<helpers>>
      <<org-mode>>
    #+END_SRC
+
