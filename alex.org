@@ -288,20 +288,6 @@
      (use-package elm-mode)
    #+END_SRC
 
-** purescript
-   #+NAME: purescript
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (use-package purescript-mode
-       :config
-       (add-hook 'purescript-mode-hook 'turn-on-purescript-indentation))
-     (use-package psci)
-   #+END_SRC
-
-** racket
-#+NAME: racket
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package racket-mode)
-#+END_SRC
 ** geiser
 #+NAME: geiser
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -536,11 +522,9 @@
      <<clojure>>
      <<elisp>>
      <<geiser>>
-     <<racket>>
      <<haskell>>
      <<golang>>
      <<elm>>
-     <<purescript>>
      <<javascript>>
      <<magit>>
      <<ivy>>
